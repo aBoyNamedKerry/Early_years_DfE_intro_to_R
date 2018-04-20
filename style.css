@@ -1,0 +1,42 @@
+
+/* make the text white on the title slide and aligned to the bottom */
+.title-slide hgroup > h1, 
+.title-slide hgroup > h2,
+.title-slide hgroup > p {
+  margin:10px;
+  padding: 10px;
+  color: #000099;  /*white*/
+  text-align: left;
+}
+
+
+/* make the colour dark blue of the headers */
+h1 { color: ; }
+h2 { color: #000099; }
+h3 { color: #000099; }
+h4 { color: #000099; }
+h5 { color: #000099; }
+h6 { color: #000099; }
+
+/* format the paragaphs here they are just dark blue text */
+p {
+	
+    color: #000099;
+}
+
+
+/* format the body too to display blue text */
+
+body {
+    color: blue;
+}
+
+ code.r{ /* Code block */ 
+   font-size: 14px;
+} 
+
+pre {
+   font-size: 14px;
+ /* background-color: lightblue; *\	
+}
+

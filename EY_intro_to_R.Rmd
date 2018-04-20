@@ -1,0 +1,519 @@
+---
+title: "Early years introduction to R"
+author: "Kerry Cella"
+date: "18 April 2018"
+css: style.css
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+library(tidyverse); library(flextable)
+```
+
+## Introduction
+
+This session is aimed to provide a two hour interactive and introductory session to R. The target audience for this particular version are those working in early year analysis and research unit at the Department for Education (DfE). However the contents can be extrapolated for general purposes.
+
+The contents of this session are based in a large part from the introductory material prepared by the Data Science Team at the Department for Business Energy and Industrial Strategy (BEIS).
+
+This is **not** an in-depth introduction to R, it is designed to provide a quick familiarisation and get interested parties coding as quickly as possible. For those who want to know more there are a plethora of internet resources available.
+
+## Requirements for today's sessions
+
+It is recommended you install at least:
+
+<font color = "DarkBlue">
+
+- R version 3.4.2 
+- R Studio 1.1.383
+
+</font>
+
+Both are available from DfE's software center. We will be using R studio throughout.
+
+
+## What is R
+
+Open source statistical language and environment largely based on [S](https://en.wikipedia.org/wiki/S_(programming_language)) 
+
+<br>
+
+A tool for data wrangling, modelling, statistical interrogation, visualisation and much more
+
+<br>
+
+A way to ensure and support reproducible analysis
+
+<br>
+
+More information [here](https://www.r-project.org/about.html)
+
+## R Studio
+
+<center>
+
+<img src = "//lonnetapp01/asddata/EY-Schools-SEND/EYARU\Divisional resources/Team resources/R training/Figures/R_console.png" width = "800px" height = "500px" />
+
+</center>
+
+## The basics: files
+
+To open a new script in R Studio go to :
+
+**File** -> **New file** -> **R Script**
+
+Then save it with a title:
+
+**File** -> **Save as**
+
+You can also set a work directory, a place to automatically read and store outputs from, in the command line or as part of the script.
+
+```{r, eval= FALSE, echo=TRUE, tidy=TRUE}
+# set your work directory
+setwd("C:/Users/KCELLA/Documents/R")
+
+#or see what directory you're working from
+getwd()
+```
+
+
+## The basics: comments and code evaluation
+
+It is good practice to comment and annotate your code. You can do this using # before writing a line. Commented code will not be evaluated by R.
+
+```{r, eval= FALSE, echo=TRUE, tidy=TRUE}
+# This is a comment
+```
+
+To run a line of code type the following into the script or the console:
+
+```{r, eval= FALSE, echo=TRUE, tidy=TRUE}
+3 + 1
+```
+
+Now hit **Ctrl+return** or or highlight the text and click **'Run'**. R will output the evaluated code:
+
+```{r, echo=FALSE, tidy=TRUE}
+3 + 1
+```
+
+## The basics: assignment and breaks
+
+In R everything is treated like an object. You use the <- sign to assign a value to an object.
+
+```{r, echo=TRUE, tidy=TRUE}
+my_vector<- c(2,10,11,15)
+
+print(my_vector)
+```
+
+c() is a standard R function which *combines* elements.
+
+It is also good practice to put section breaks into your code for readability.
+
+```{r, echo=TRUE, tidy=TRUE}
+# I'm a section break ----------------------------
+
+# Me too =========================================
+```
+
+
+## Date types
+
+<font color = "DarkBlue">
+
+- Integer e.g. 1,2,3
+
+
+- Numeric e.g. 5, -6, 3.1
+
+
+- Character / string e.g. "Hello world"
+
+
+- Factor (categorical) e.g. "Red lorry", "Yellow lorry"
+
+
+- Logical - TRUE / FALSE
+
+
+</font>
+
+## Data structures: vector
+
+The first type of data structure you will work with in R is a vector.
+
+A vector is a one dimensional object that can only contain one type of data.
+
+R is a *vectorised* language which means you can run calculation across the whole vector.
+
+```{r, echo=TRUE, tidy=TRUE}
+# Create an integer vector
+dog_tail_lengths<- c(2,10,11,15)
+
+#apply a calculation over whole vector
+3 * dog_tail_lengths
+```
+
+## Data structures: data frames
+
+Data frames are probably the most common type of object you will work with in R
+
+They are essentially a table which combine vectors together.
+
+
+```{r, echo=TRUE, tidy=TRUE}
+# Create a character vector
+dog_type<- c("Terrier","Whippet", "Greyhound", "Great Dane")
+
+#create a data frame for dogs
+dogs<- data.frame(dog_type = dog_type,
+                  dog_tail_lengths = dog_tail_lengths)
+
+print(dogs)
+```
+
+## Data structures: other
+
+<font color = DarkBlue>
+
+- Lists
+
+- Matrices
+
+- Arrays
+
+
+You can find out more about these data structures by accessing the help through the console. Type and execute as follows:
+
+?list
+
+</font>
+
+## Data manipulation: base R vectors
+
+To find the mean of a vector:
+
+```{r, echo=TRUE, tidy=TRUE}
+# mean on a vector
+mean(dog_tail_lengths)
+```
+
+If we want to perform the same operation on a column in a data frame then we reference it using the **$** symbol.
+
+```{r, echo=TRUE, tidy=TRUE}
+# mean of a data frame column
+mean(dogs$dog_tail_lengths)
+```
+
+## Data manipulation: base R data frames
+
+<font size =3>
+
+We can find produce a summary of the data frame structure using str()
+
+```{r, echo=TRUE, tidy=TRUE}
+str(dogs)
+```
+
+We can also quickly summarise all of the variables using summary()
+
+```{r, echo=TRUE, tidy=TRUE}
+summary(dogs)
+```
+
+</font>
+
+
+## Challenge 1
+
+Find the standard deviation of the dogs tail length from the dogs data frame.
+
+Hint - you should use the sd() function.
+
+
+## Reading in data
+
+<font size = 3>
+
+Reading data into R is pretty straight forward. For CSVs you can simply use the read.csv() function.
+
+Let's read the EYFSP data in. We'll use the function head() to see what the first 5 rows contain.
+
+```{r, echo=TRUE, tidy=TRUE, eval = FALSE}
+eyfsp_17 <- read.csv("./data/EYFSP_17_UD_LA.csv", header = TRUE)
+
+head(eyfsp_17)
+```
+
+
+```{r, echo=FALSE}
+eyfsp_17 <- read.csv("//lonnetapp01/asddata/EY-Schools-SEND/EYARU/Divisional resources/Team resources/R training/Data/EYFSP_17_UD_LA.csv", header = TRUE)
+
+head(eyfsp_17, 5)
+```
+
+</font>
+
+## Challenge 2
+
+
+Can you identify the structure of the data?
+
+What is the mean number of children per local authority who were at the expected level for listening and attention? Variable (ELG_1_Expect). 
+
+
+<br>
+
+*Tip* 
+
+You can also view your data at any time in R studio by either running the command View(data_name) or by clicking on the object in the environment window.
+
+
+## Data manipulation: base R filtering
+
+<font size = 3>
+
+Data frame objects are essentially a series of rows and columns. You can access and select criteria through using the square brackets: e.g. data[,]
+
+Criteria on the left before the comma reflects rows and the right, columns. Example below illustrates how you would filter data to LAs in the east of England.
+
+```{r, echo= TRUE}
+eyfsp_17_east <- eyfsp_17[eyfsp_17$GOR_name == "East of England",]
+head(eyfsp_17_east, 3)
+```
+
+</font>
+
+## Data manipulation: base R filtering
+
+We can also filter based on logic and select only certain columns (variables) to keep.
+
+```{r, echo= TRUE}
+eyfsp_17_east_listen_expected_high <- eyfsp_17[eyfsp_17$ELG_1_Expect > 1000,
+                                               c("GOR_name", "ELG_1_Expect")]
+head(eyfsp_17_east_listen_expected_high, 3)
+```
+
+You can include multiple conditions when filtering data, for instance by using & for AND conditions and | for OR conditions.
+
+## Writing data
+
+Writing out data is also relatively straight forward in R. For instance to write a csv you simply use the write.csv() function.
+
+We can write out the data we just created as follows:
+
+```{r, echo= TRUE, eval = FALSE}
+write.csv(x = eyfsp_17_east, file = "eyfsp_17_east.csv" )
+```
+
+This will written into wherever you're working directory is. It is also possible to specify a different directory within the file string, e.g:
+
+<font color = green>
+"c:/differentfolder/eyfsp_17_east.csv"
+
+</font>
+
+## Challenge 3
+
+
+Create a new R object filtered by LAs within the North East area and where the variable ELG_1_Exceed is > 500.
+
+For a bonus point write the data out to your working directory.
+
+## Tidyverse
+
+<font size = 4>
+
+A collection of packages for data wrangling, exploration and manipulation.
+
+Intended to make structured R code that guide an individual through a project workflow in a readable way.
+
+A basic philosophy of tidy objects are that rows represent observations and columns variables.
+
+</font>
+
+<center>
+
+<img src = "//lonnetapp01/asddata/EY-Schools-SEND/EYARU\Divisional resources/Team resources/R training/Figures/Tidyverse_diag.png" width = "700px" height = "250px" />
+
+</center>
+
+
+<right>
+
+<font size = 3>
+
+**Source**: [R for Data Science](http://r4ds.had.co.nz/explore-intro.html)
+
+</font>
+
+</right>
+
+
+## Installation and calling the tidyverse
+
+As with any R packages you need to install them before the first time you use them:
+
+To install the tidyverse, do the following:
+
+```{r, echo= TRUE, eval = FALSE}
+#you only need to do this once
+install.packages("tidyverse")
+```
+
+To use the packages and the functions included you need to call it into your session as follows:
+
+```{r, echo= TRUE, eval = FALSE}
+#you usually need to do this at the start of a new session
+library(tidyverse)
+```
+
+
+## Tidyverse packages: dplyr
+
+A core package within the tidyverse is the dplyr package. This package is designed to make manipulating data straight forward and logical. Features of the package include:
+
+```{r}
+function_names<- c("%>%", "filter", "select", "mutate", "arrange", "group_by", "summarise", "left_join")
+
+explanations <- c("Pipe: provides a logical flow to data manipulation", "Function to filter rows in data set", "Function to select columns in data set", "Function to add or manipulate columns", "Function to sort data", "Function to group by a variable", "Summary for grouped data", "Left join data sets together as per SQL")
+
+dplyr_table<- data.frame(function_names, explanations)
+
+
+flextable(dplyr_table, cwidth = 3) %>% align(align = "left", part = "all") %>%
+  set_header_labels(function_names = "Feature", explanations = "Explanation") %>%
+  fontsize(part = "header", size = 14) %>% fontsize(part = "body", size = 12)
+```
+
+
+## dplyr: filter
+
+<font size = 4>
+
+We're going to create the same data frames as before but this time use the filter() function from dplyr.
+
+```{r, echo = TRUE}
+#base R method
+eyfsp_17_east <- eyfsp_17[eyfsp_17$GOR_name == "East of England",]
+
+#filter method
+eyfsp_17_east <- filter(eyfsp_17, GOR_name == "East of England")
+
+head(eyfsp_17_east, 3)
+```
+
+</font>
+
+## dplyr: %>% and arrange
+
+<font size = 4>
+
+We can also use the %>% operator to pipe data between function. For instance we can pipe objects directly into functions, including to arrange the output.
+
+```{r, echo =TRUE}
+eyfsp_17_east <- eyfsp_17 %>% filter(GOR_name == "East of England") %>%
+  arrange(LA_Name)
+
+head(eyfsp_17_east, 3)
+
+```
+
+</font>
+
+## dplyr: select
+
+select() allows you to select only certain columns from a data frame. It is very similar to the SQL select.
+
+```{r, echo =TRUE}
+eyfsp_17_east_slim <- eyfsp_17 %>% filter(GOR_name == "East of England") %>%
+  select(GOR_name, LA_Name, ELG_1_Expect, ELG_1_Exceed)
+                
+head(eyfsp_17_east_slim, 5)
+```
+
+
+## dplyr: mutate
+
+<font size =4>
+Mutate allows you to add a column or variable to your data frame
+
+```{r, echo =TRUE}
+eyfsp_17_east_slim_EE <- eyfsp_17_east_slim %>% 
+  mutate(total_expect_exceed = ELG_1_Expect + ELG_1_Exceed)
+                
+head(eyfsp_17_east_slim_EE, 5)
+```
+
+
+</font>
+
+
+## dplyr: group_by and summarise
+
+<font size =4>
+
+group_by() and summarise() are often used in conjunction with each other and allow you to group data by elements in a column and summarise the results. For instance, to ascertain the average number of exceeded children by region:
+
+```{r, echo =TRUE}
+eyfsp_17 %>% group_by(GOR_name) %>% summarise(average_exceeded = mean(ELG_1_Exceed))
+```
+
+</font>
+
+## Challenge 4
+
+
+Using the dplyr tool kit find the standard deviation for the combined number of children who were emerging and expected for the listening and attention (ELG_1_Emerge, ELG_1_Expect), grouped by English region.
+
+
+*HINT*
+
+You will need to use the sd(), mutate(), group_by() and summarise() functions.
+
+##Challenge 4
+
+```{r, echo =TRUE}
+eyfsp_17 %>% 
+  mutate(total_expect_emerge = ELG_1_Expect + ELG_1_Emerge) %>%
+  group_by(GOR_name) %>% summarise(sd_EE = sd(total_expect_emerge))
+```
+
+## Plotting sneak peak: ggplot2
+<font size =3>
+
+Another package within the tidyverse is ggplot2 which allows you to create plots based on the [grammar of graphics](https://ramnathv.github.io/pycon2014-r/visualize/ggplot2.html). 
+
+We can pipe straight into ggplot2 from dplyr to visualise our results:
+
+```{r, echo =TRUE, fig.height= 3, fig.width= 5}
+eyfsp_17 %>% group_by(GOR_name) %>% summarise(average_exceeded = mean(ELG_1_Exceed)) %>%
+  ggplot(data =.) +
+  geom_bar(aes(x = GOR_name, y = average_exceeded, fill = GOR_name), stat ="identity")+
+  theme(axis.title.x=element_blank(), axis.text.x=element_blank())
+```
+
+</font>
+
+
+## Further resources:
+
+<font size = 4 color = Dakblue>
+
+
+That's the end of this introductory session, I would personally recommend the following R resources:
+
+- Data camp [intro to R course](https://www.datacamp.com/courses/free-introduction-to-r)
+
+- [DfE introduction course] (https://dfe-analytical-services.github.io/r-training-course/)
+
+- The [R for data science book](http://r4ds.had.co.nz/)
+
+
+<br>
+
+Finally, the great thing about R and open source software is the community support. If you are struggling then google search really is your friend, I can guarantee someone else has almost certainly had the same problem before and posted about it. 
+
+</font>
